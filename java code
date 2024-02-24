@@ -1,0 +1,132 @@
+import java.util.*;
+
+class Student {
+    private String name;
+    private int age;
+    private int gradeLevel;
+    private Hostel hostel;
+
+    public Student(String name, int age, int gradeLevel) {
+        this.name = name;
+        this.age = age;
+        this.gradeLevel = gradeLevel;
+    }
+
+    // Getters and setters
+    public void setHostel(Hostel hostel) {
+        this.hostel = hostel;
+    }
+
+    public Hostel getHostel() {
+        return hostel;
+    }
+}
+
+class Teacher {
+    private String name;
+    private String subject;
+
+    public Teacher(String name, String subject) {
+        this.name = name;
+        this.subject = subject;
+    }
+
+    // Getters
+}
+
+class Class {
+    private String className;
+    private Teacher teacher;
+    private List<Student> students;
+
+    public Class(String className, Teacher teacher) {
+        this.className = className;
+        this.teacher = teacher;
+        this.students = new ArrayList<>();
+    }
+
+    // Add student to class
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+
+    // Getters
+}
+
+class Hostel {
+    private String hostelName;
+    private int capacity;
+    private List<Student> occupants;
+
+    public Hostel(String hostelName, int capacity) {
+        this.hostelName = hostelName;
+        this.capacity = capacity;
+        this.occupants = new ArrayList<>();
+    }
+
+    // Add student to hostel
+    public void addOccupant(Student student) {
+        if (occupants.size() < capacity) {
+            occupants.add(student);
+            student.setHostel(this);
+        } else {
+            System.out.println("Hostel is full");
+        }
+    }
+
+    // Getters
+}
+
+class BoardingSchool {
+    private List<Student> students;
+    private List<Teacher> teachers;
+    private List<Class> classes;
+    private List<Hostel> hostels;
+
+    public BoardingSchool() {
+        this.students = new ArrayList<>();
+        this.teachers = new ArrayList<>();
+        this.classes = new ArrayList<>();
+        this.hostels = new ArrayList<>();
+    }
+
+    // Add hostel to boarding school
+    public void addHostel(Hostel hostel) {
+        hostels.add(hostel);
+    }
+
+    // Getters
+}
+
+public class Main {
+    public static void main(String[] args) {
+        BoardingSchool school = new BoardingSchool();
+
+        Teacher mathTeacher = new Teacher("John Doe", "Mathematics");
+        Class mathClass = new Class("Math", mathTeacher);
+
+        Teacher physicsTeacher = new Teacher("Jane Smith", "Physics");
+        Class physicsClass = new Class("Physics", physicsTeacher);
+
+        school.addHostel(new Hostel("A", 2));
+        school.addHostel(new Hostel("B", 3));
+
+        // Add students to classes and hostels
+        Student student1 = new Student("Alice", 16, 10);
+        mathClass.addStudent(student1);
+        school.getHostels().get(0).addOccupant(student1);
+
+        Student student2 = new Student("Bob", 15, 9);
+        physicsClass.addStudent(student2);
+        school.getHostels().get(1).addOccupant(student2);
+
+        // Print hostel information for each student
+        for (Student student : school.getStudents()) {
+            if (student.getHostel() != null) {
+                System.out.println(student.getName() + " is in hostel " + student.getHostel().getHostelName());
+            } else {
+                System.out.println(student.getName() + " is not assigned to a hostel");
+            }
+        }
+    }
+}
